@@ -1,0 +1,11 @@
+{
+  "stores": [
+    { "id": "alle",     "names": { "ru": "Все", "de": "Alle" }, "order": [] },
+    { "id": "rewe",     "names": { "ru": "REWE", "de": "REWE" },
+      "order": ["obst", "brot", "fleisch", "molkerei", "tk", "nudeln", "konserven", "backen", "gewuerze", "suess", "snacks", "getraenke", "pflege", "putzen", "papier"] },
+    { "id": "lidl",     "names": { "ru": "Lidl", "de": "Lidl" },
+      "order": ["brot", "obst", "molkerei", "fleisch", "tk", "nudeln", "konserven", "backen", "gewuerze", "suess", "snacks", "getraenke", "putzen", "papier", "pflege"] },
+    { "id": "rossmann", "names": { "ru": "Rossmann", "de": "Rossmann" },
+      "order": ["pflege", "putzen", "papier", "snacks", "suess", "getraenke"] }
+  ]
+}
