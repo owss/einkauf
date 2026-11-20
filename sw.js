@@ -1,7 +1,7 @@
 // Offline-Cache: Antworten kommen sofort aus dem Cache und werden im
 // Hintergrund aktualisiert. Änderungen (z. B. am Katalog) sind daher
 // spätestens beim zweiten Öffnen sichtbar.
-const CACHE = 'einkauf-v1';
+const CACHE = 'einkauf-v3';
 const ASSETS = ['./', './index.html', './catalog.json', './stores.json', './qrcode.js', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

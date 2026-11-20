@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#f8fbf6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141d17" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex, nofollow">
 <title>Einkaufsliste · Список покупок</title>
 <link rel="manifest" href="manifest.json">
@@ -11,95 +13,146 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root {
-  --ink: #111111;
-  --muted: #5f5f5f;
-  --line: #d9d9d9;
+  --bg: #eef3ec;
+  --head: #f8fbf6;
   --paper: #ffffff;
-  --bg: #f4f3ef;
-  --accent: #1d6b3a;
-  --sel: #fff8db;
+  --ink: #1f2b22;
+  --muted: #5a6b5e;
+  --line: #dbe5d8;
+  --soft: #e3efe4;
+  --soft-2: #d2e5d6;
+  --accent: #2f7d4f;
+  --accent-ink: #ffffff;
+  --accent-deep: #245f3c;
+  --sel: #f2f9f3;
+  --ring: rgba(47, 125, 79, 0.35);
+  --shadow: 0 1px 2px rgba(31, 43, 34, 0.05), 0 6px 18px rgba(31, 43, 34, 0.05);
+  --backdrop: rgba(17, 24, 19, 0.45);
   --serif: Georgia, "PT Serif", Cambria, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111813;
+    --head: #141d17;
+    --paper: #18221b;
+    --ink: #e3ece4;
+    --muted: #9db0a2;
+    --line: #2a3a2e;
+    --soft: #213026;
+    --soft-2: #2b3e31;
+    --accent: #6cc08e;
+    --accent-ink: #0f1a13;
+    --accent-deep: #8fd3aa;
+    --sel: #1c2a20;
+    --ring: rgba(108, 192, 142, 0.4);
+    --shadow: none;
+    --backdrop: rgba(0, 0, 0, 0.6);
+  }
+}
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; font: 16px/1.4 var(--sans); color: var(--ink); background: var(--bg); }
-button { font: inherit; color: inherit; cursor: pointer; }
+body { margin: 0; font: 16px/1.4 var(--sans); color: var(--ink); background: var(--bg); -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; transition: background-color 0.15s, color 0.15s, box-shadow 0.15s; }
+:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 [hidden] { display: none !important; }
 
-.sticky { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--line); }
-.top { max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 6px; }
-.top h1 { font: 700 20px/1.2 var(--serif); margin: 0; }
-.seg { display: inline-flex; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; flex: none; }
-.seg button { border: 0; background: none; padding: 6px 10px; min-height: 40px; font-size: 14px; }
-.seg button + button { border-left: 1px solid var(--ink); }
-.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
-.tabs { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; }
+.sticky { position: sticky; top: 0; z-index: 10; background: var(--head); border-bottom: 1px solid var(--line); }
+.top { max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px 6px; }
+.top h1 { font: 700 21px/1.2 var(--serif); margin: 0; color: var(--accent-deep); }
+.seg { display: inline-flex; gap: 2px; background: var(--soft); border-radius: 999px; padding: 3px; flex: none; }
+.seg button { border: 0; background: none; border-radius: 999px; padding: 6px 12px; min-height: 38px; font-size: 14px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(31, 43, 34, 0.15); }
+.tabs { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; padding: 0 8px; }
 .tabs button { border: 0; background: none; padding: 10px; min-height: 46px; font-weight: 600; border-bottom: 3px solid transparent; color: var(--muted); }
-.tabs button[aria-selected="true"] { border-bottom-color: var(--ink); color: var(--ink); }
+.tabs button[aria-selected="true"] { border-bottom-color: var(--accent); color: var(--accent-deep); }
 
-main { max-width: 640px; margin: 0 auto; padding: 10px 12px 130px; }
-h2.group { font: 700 15px/1.3 var(--serif); letter-spacing: 0.06em; text-transform: uppercase; margin: 22px 4px 8px; padding-bottom: 4px; border-bottom: 2px solid var(--ink); }
-ul.rows { list-style: none; margin: 0; padding: 0; background: var(--paper); border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+main { max-width: 640px; margin: 0 auto; padding: 10px 14px 130px; }
+h2.group { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 700 14px/1.3 var(--serif); letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent-deep); margin: 26px 6px 10px; }
+.gcount { font: 700 12px/1 var(--sans); letter-spacing: 0; background: var(--soft); color: var(--accent-deep); border-radius: 999px; padding: 5px 9px; min-width: 26px; text-align: center; }
+ul.rows { list-style: none; margin: 0; padding: 0; background: var(--paper); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow), 0 0 0 1px var(--line); }
 ul.rows > li + li { border-top: 1px solid var(--line); }
 
-.entry-head { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; padding: 0 4px; }
-button.link { background: none; border: 0; text-decoration: underline; padding: 8px 4px; min-height: 40px; color: var(--muted); }
+.entry-head { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; padding: 2px 6px 0; }
+button.link { background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; padding: 8px 4px; min-height: 40px; color: var(--muted); }
 
 .row { scroll-margin-top: 130px; scroll-margin-bottom: 100px; }
 .row.cur { background: var(--sel); }
-.row-head { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; min-height: 50px; border: 0; background: none; text-align: left; }
-.row .qty { color: var(--muted); white-space: nowrap; }
+.row-head { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; min-height: 52px; border: 0; background: none; text-align: left; }
+.row .qty { color: var(--muted); white-space: nowrap; font-size: 15px; }
 .row.has .name { font-weight: 600; }
-.row.has .qty { color: var(--accent); font-weight: 700; }
-.row.cur .name { font-size: 19px; font-weight: 700; }
-.tag { font-size: 12px; font-weight: 400; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 4px; white-space: nowrap; }
+.row.has .qty { background: var(--soft); color: var(--accent-deep); font-weight: 700; border-radius: 999px; padding: 3px 11px; }
+.row.cur .name { font-size: 19px; font-weight: 700; color: var(--accent-deep); }
+.tag { font-size: 12px; font-weight: 500; color: var(--accent-deep); background: var(--soft); border-radius: 999px; padding: 1px 8px; margin-left: 6px; white-space: nowrap; }
 
-.editor { padding: 2px 14px 14px; display: grid; gap: 12px; }
-.stepper { display: grid; grid-template-columns: 60px minmax(0, 1fr) 60px; gap: 8px; }
-.step { font-size: 28px; line-height: 1; border: 1px solid var(--ink); background: var(--paper); border-radius: 10px; min-height: 54px; }
-.qin { font: 700 24px var(--sans); text-align: center; border: 1px solid var(--ink); border-radius: 10px; min-width: 0; width: 100%; background: var(--paper); color: var(--ink); }
-.units { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
-.chip { flex: none; border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 6px 12px; min-height: 40px; font-size: 15px; }
-.chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.editor { padding: 2px 16px 16px; display: grid; gap: 12px; }
+.stepper { display: grid; grid-template-columns: 62px minmax(0, 1fr) 62px; gap: 8px; }
+.step { font-size: 26px; line-height: 1; border: 0; background: var(--soft); color: var(--accent-deep); border-radius: 14px; min-height: 54px; }
+.step:active { background: var(--soft-2); }
+.qin { font: 700 24px var(--sans); text-align: center; border: 1.5px solid var(--line); border-radius: 14px; min-width: 0; width: 100%; background: var(--paper); color: var(--ink); }
+.qin:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+.units { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0; scrollbar-width: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 6px 14px; min-height: 40px; font-size: 15px; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
 .actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
-button.primary { background: var(--ink); color: #fff; border: 1px solid var(--ink); border-radius: 10px; padding: 10px 18px; font-weight: 600; min-height: 48px; }
-button.ghost { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; min-height: 48px; }
-.list-end { display: flex; justify-content: center; padding: 20px 0 0; }
+.primary { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 14px; padding: 10px 20px; font-weight: 600; min-height: 48px; box-shadow: 0 2px 8px rgba(47, 125, 79, 0.25); }
+.primary:active { background: var(--accent-deep); }
+.ghost { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 10px 16px; min-height: 48px; }
+.ghost:active { background: var(--soft); }
+a.primary, a.ghost { display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit; }
+a.primary { color: var(--accent-ink); }
+.list-end { display: flex; justify-content: center; padding: 22px 0 0; }
 
-.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--paper); border-top: 1px solid var(--line); padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--head); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+@supports (backdrop-filter: blur(8px)) {
+  .bar { background: color-mix(in srgb, var(--head) 88%, transparent); backdrop-filter: blur(12px); }
+}
 .bar-in { max-width: 640px; margin: 0 auto; display: flex; gap: 8px; align-items: center; }
 .bar-in .count { flex: 1; color: var(--muted); font-size: 15px; }
 
-.chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 4px 0 2px; }
-.progress { margin: 14px 4px 0; font-size: 14px; color: var(--muted); }
-.meter { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 6px; }
-.meter > div { height: 100%; background: var(--accent); }
-.shop-item { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; padding: 14px; min-height: 58px; border: 0; background: none; text-align: left; font-size: 18px; }
-.shop-item .qty { font-weight: 700; white-space: nowrap; }
-.box { width: 24px; height: 24px; border: 2px solid var(--ink); border-radius: 6px; display: grid; place-items: center; }
-.done .box { background: var(--accent); border-color: var(--accent); }
-.done .box::after { content: ""; width: 6px; height: 12px; border: solid #fff; border-width: 0 3px 3px 0; transform: translate(0, -1px) rotate(45deg); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 6px 0 2px; }
+.progress { margin: 16px 6px 0; font-size: 14px; color: var(--muted); }
+.meter { height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.meter > div { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.3s ease; }
+.shop-item { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 14px; align-items: center; width: 100%; padding: 14px 16px; min-height: 60px; border: 0; background: none; text-align: left; font-size: 18px; }
+.shop-item:active { background: var(--sel); }
+.shop-item .qty { font-weight: 700; white-space: nowrap; color: var(--accent-deep); }
+.box { width: 26px; height: 26px; border: 2px solid var(--accent); border-radius: 8px; display: grid; place-items: center; }
+.done .box { background: var(--accent); }
+.done .box::after { content: ""; width: 6px; height: 12px; border: solid var(--accent-ink); border-width: 0 3px 3px 0; transform: translate(0, -1px) rotate(45deg); }
 .done .name { text-decoration: line-through; color: var(--muted); }
 .done .qty { color: var(--muted); font-weight: 400; }
-.notice { background: var(--paper); border-radius: 10px; padding: 16px; box-shadow: 0 0 0 1px var(--line); margin-top: 16px; }
-.alldone { text-align: center; font: 700 18px var(--serif); padding: 18px; color: var(--accent); }
-.shop-actions { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; margin-top: 24px; }
+.notice { background: var(--paper); border-radius: 16px; padding: 18px; box-shadow: var(--shadow), 0 0 0 1px var(--line); margin-top: 16px; color: var(--muted); }
+.alldone { text-align: center; font: 700 19px var(--serif); padding: 20px; color: var(--accent-deep); }
+.shop-actions { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; margin-top: 26px; }
 
-dialog { border: 0; border-radius: 14px; padding: 20px; width: min(92vw, 420px); color: var(--ink); }
-dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
-dialog h3 { margin: 0 0 12px; font: 700 19px var(--serif); }
-.qr { background: #fff; padding: 4px; }
-.qr svg { width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; }
-.hint { color: var(--muted); font-size: 14px; text-align: center; margin: 6px 0 12px; }
-.linkbox { width: 100%; font: 13px ui-monospace, monospace; padding: 8px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); }
+dialog { border: 0; border-radius: 20px; padding: 22px; width: min(92vw, 420px); background: var(--paper); color: var(--ink); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2); }
+dialog::backdrop { background: var(--backdrop); }
+dialog h3 { margin: 0 0 12px; font: 700 20px var(--serif); color: var(--accent-deep); }
+.qr { background: #ffffff; padding: 10px; border-radius: 14px; }
+.qr svg { width: 100%; max-width: 280px; height: auto; display: block; margin: 0 auto; }
+.hint { color: var(--muted); font-size: 14px; text-align: center; margin: 8px 0 12px; }
+.linkbox { width: 100%; font: 13px ui-monospace, monospace; padding: 10px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: var(--bg); }
 .dlg-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 14px; }
 .dlg-actions.rev { flex-direction: row-reverse; justify-content: flex-start; }
 .form { display: grid; gap: 12px; }
 .form label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
-.form input, .form select { font: 16px var(--sans); padding: 10px; border: 1px solid var(--muted); border-radius: 8px; color: var(--ink); background: #fff; width: 100%; }
+.form input, .form select { font: 16px var(--sans); padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; color: var(--ink); background: var(--paper); width: 100%; }
+.form input:focus, .form select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
 .form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.error { color: #a40e26; padding: 16px; }
+.error { color: #b3261e; padding: 16px; }
+.send-section { display: grid; gap: 8px; margin: 4px 0 16px; }
+.send-section h4 { margin: 0; font: 600 13px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.wa-icon { width: 20px; height: 20px; margin-right: 8px; flex: none; }
+.contacts { display: grid; gap: 10px; margin-top: 4px; padding: 14px; border-radius: 14px; background: var(--bg); }
+.clist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.clist li { display: flex; align-items: center; gap: 10px; background: var(--paper); border-radius: 12px; padding: 6px 6px 6px 12px; box-shadow: 0 0 0 1px var(--line); }
+.clist .cname { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clist .cphone { color: var(--muted); font-size: 14px; white-space: nowrap; }
+.clist .ghost { min-height: 40px; padding: 6px 12px; font-size: 14px; }
+.cerr { color: #b3261e; font-size: 14px; margin: 0; }
+@media (prefers-color-scheme: dark) { .cerr, .error { color: #f2a7a0; } }
+.send-more { display: flex; justify-content: center; }
 </style>
 </head>
 <body>
@@ -196,7 +249,13 @@ const T = {
     allDone: 'Alles erledigt!', resetChecks: 'Häkchen zurücksetzen', confirmReset: 'Alle Häkchen entfernen?',
     edit: 'Liste bearbeiten', confirmImport: 'Deinen aktuellen Entwurf durch diese Liste ersetzen?',
     noList: 'Hier ist noch keine Liste. Öffne den Link, den du geschickt bekommen hast – oder trage selbst ein und sende die Liste.',
-    other: 'Sonstiges', loadError: 'Katalog konnte nicht geladen werden.'
+    other: 'Sonstiges', loadError: 'Katalog konnte nicht geladen werden.',
+    waTo: n => 'WhatsApp an ' + n, waPick: 'WhatsApp: Chat auswählen …', otherWays: 'Andere Wege',
+    editContacts: 'Empfänger bearbeiten', addFirstContact: '+ WhatsApp-Empfänger hinzufügen', doneEdit: 'Fertig',
+    addContact: 'Hinzufügen', contactName: 'Name', contactPhone: 'Handynummer',
+    phoneHint: 'z. B. 0170 1234567 oder +49 170 1234567. Wird nur auf diesem Gerät gespeichert.',
+    invalidContact: 'Bitte Name und eine gültige Handynummer eingeben.',
+    waText: (n, url) => 'Einkaufsliste (' + n + ' Artikel): ' + url
   },
   ru: {
     title: 'Список покупок', tabEntry: 'Заполнить', tabShop: 'Покупки',
@@ -216,7 +275,13 @@ const T = {
     allDone: 'Всё куплено!', resetChecks: 'Сбросить отметки', confirmReset: 'Снять все отметки?',
     edit: 'Изменить список', confirmImport: 'Заменить свой черновик этим списком?',
     noList: 'Список ещё не загружен. Откройте присланную ссылку – или заполните список сами и отправьте его.',
-    other: 'Прочее', loadError: 'Не удалось загрузить каталог.'
+    other: 'Прочее', loadError: 'Не удалось загрузить каталог.',
+    waTo: n => 'WhatsApp: ' + n, waPick: 'WhatsApp: выбрать чат …', otherWays: 'Другие способы',
+    editContacts: 'Изменить получателей', addFirstContact: '+ Добавить получателя WhatsApp', doneEdit: 'Готово',
+    addContact: 'Добавить', contactName: 'Имя', contactPhone: 'Номер телефона',
+    phoneHint: 'напр. 0170 1234567 или +49 170 1234567. Хранится только на этом устройстве.',
+    invalidContact: 'Введите имя и корректный номер телефона.',
+    waText: (n, url) => 'Список покупок (' + n + ' поз.): ' + url
   }
 };
 
@@ -304,7 +369,7 @@ function editorHtml(r, st) {
 function renderEntry() {
   $('#entry-list').innerHTML = catalog.groups.map(g => {
     const rows = rowsOfGroup(g.id);
-    return rows.length ? '<h2 class="group">' + esc(nameOf(g)) + '</h2><ul class="rows">' + rows.map(rowHtml).join('') + '</ul>' : '';
+    return rows.length ? '<h2 class="group" data-g="' + g.id + '"><span>' + esc(nameOf(g)) + '</span><span class="gcount" hidden></span></h2><ul class="rows">' + rows.map(rowHtml).join('') + '</ul>' : '';
   }).join('');
   updateCounts();
 }
@@ -318,6 +383,11 @@ function updateCounts() {
   const rows = allRows(), i = rows.findIndex(r => r.key === draft.cur);
   $('#pos').textContent = i >= 0 ? t('pos', i + 1, rows.length) : t('posNone', rows.length);
   $('#count').textContent = t('count', countDraft());
+  document.querySelectorAll('#entry-list h2.group[data-g]').forEach(h => {
+    const n = rowsOfGroup(h.dataset.g).filter(r => getState(r.key).q > 0).length;
+    const b = h.querySelector('.gcount');
+    b.textContent = n; b.hidden = !n;
+  });
 }
 function setCur(key, scroll = true) {
   const old = draft.cur;
@@ -448,34 +518,97 @@ function decodeList(s) {
 function hashStr(s) { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
 
 /* ---------- Senden ---------- */
+// Empfänger liegen nur im localStorage dieses Geräts, nie im Repo.
+let contacts = LS.get('einkauf.contacts', []);
+const sendState = { url: '', n: 0, editing: false, err: false, copied: false };
+const WA_SVG = '<svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.6a8.2 8.2 0 0 1-12.1 7.2L4 20l1.3-3.7A8.2 8.2 0 1 1 20 11.6z"/><path d="M9 8.6c.2-.4.5-.4.7-.4h.5c.2 0 .4 0 .5.4l.7 1.6c.1.2 0 .4-.1.6l-.5.6c-.1.1-.1.3 0 .5a6 6 0 0 0 2.6 2.4c.2.1.4.1.5 0l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.3.3.5 0 .6-.4 1.4-1.2 1.6-.8.2-2.4 0-4.4-1.6S8.6 11.6 8.6 10.4c0-.8.2-1.4.4-1.8z"/></svg>';
+
+function normalizePhone(s) {
+  let d = String(s || '').replace(/[^\d+]/g, '');
+  if (d.startsWith('+')) d = d.slice(1);
+  else if (d.startsWith('00')) d = d.slice(2);
+  else if (d.startsWith('0')) d = '49' + d.slice(1);   // deutsche Nummer ohne Ländervorwahl
+  d = d.replace(/\D/g, '');
+  return d.length >= 8 && d.length <= 15 ? d : null;
+}
+const waLink = phone => 'https://wa.me/' + (phone || '') + '?text=' + encodeURIComponent(t('waText', sendState.n, sendState.url));
+
 function openSend() {
   commitInput(liOf(draft.cur));
-  const body = $('#send-body'), n = countDraft();
-  if (!n) {
-    body.innerHTML = '<p>' + esc(t('emptySend')) + '</p>';
-  } else {
-    const url = location.href.split('#')[0] + '#' + encodeDraft();
-    let svg = '';
-    try { const qr = qrcode(0, 'L'); qr.addData(url); qr.make(); svg = qr.createSvgTag({ cellSize: 4, margin: 4, scalable: true }); } catch (e) { svg = ''; }
-    body.innerHTML =
-      '<p style="margin:0 0 8px">' + esc(t('count', n)) + '</p>' +
-      (svg ? '<div class="qr">' + svg + '</div>' : '') +
-      '<p class="hint">' + esc(t('qrHint')) + '</p>' +
-      '<input class="linkbox" id="linkbox" readonly value="' + esc(url) + '" aria-label="Link">' +
-      '<div class="dlg-actions">' +
-        (navigator.share ? '<button type="button" class="primary" id="btn-share">' + esc(t('share')) + '</button>' : '') +
-        '<button type="button" class="' + (navigator.share ? 'ghost' : 'primary') + '" id="btn-copy">' + esc(t('copy')) + '</button>' +
-      '</div>';
-    const sb = $('#btn-share');
-    if (sb) sb.onclick = () => navigator.share({ title: t('shareText'), text: t('shareText'), url }).catch(() => {});
-    $('#btn-copy').onclick = async () => {
-      const b = $('#btn-copy');
-      try { await navigator.clipboard.writeText(url); }
-      catch (e) { const lb = $('#linkbox'); lb.select(); try { document.execCommand('copy'); } catch (e2) {} }
-      b.textContent = t('copied');
-    };
-  }
+  sendState.n = countDraft();
+  sendState.url = location.href.split('#')[0] + '#' + encodeDraft();
+  sendState.editing = false; sendState.err = false; sendState.copied = false;
+  renderSend();
   $('#dlg-send').showModal();
+}
+function renderSend() {
+  const body = $('#send-body'), n = sendState.n, url = sendState.url;
+  if (!n) { body.innerHTML = '<p>' + esc(t('emptySend')) + '</p>'; return; }
+  let svg = '';
+  try { const qr = qrcode(0, 'L'); qr.addData(url); qr.make(); svg = qr.createSvgTag({ cellSize: 4, margin: 4, scalable: true }); } catch (e) { svg = ''; }
+
+  let wa = '<div class="send-section">' +
+    contacts.map((c, i) => '<a class="primary" href="' + esc(waLink(c.phone)) + '" target="_blank" rel="noopener"' + (i === 0 ? ' autofocus' : '') + '>' +
+      WA_SVG + esc(t('waTo', c.name)) + '</a>').join('') +
+    '<a class="ghost" href="' + esc(waLink('')) + '" target="_blank" rel="noopener"' + (contacts.length ? '' : ' autofocus') + '>' + WA_SVG + esc(t('waPick')) + '</a>';
+  if (sendState.editing) {
+    wa += '<div class="contacts">' +
+      (contacts.length ? '<ul class="clist">' + contacts.map((c, i) =>
+        '<li><span class="cname">' + esc(c.name) + '</span><span class="cphone">+' + esc(c.phone) + '</span>' +
+        '<button type="button" class="ghost" data-del="' + i + '">' + esc(t('remove')) + '</button></li>').join('') + '</ul>' : '') +
+      '<div class="form">' +
+        '<div class="two">' +
+          '<label><span>' + esc(t('contactName')) + '</span><input id="c-name" autocomplete="off"></label>' +
+          '<label><span>' + esc(t('contactPhone')) + '</span><input id="c-phone" type="tel" inputmode="tel" autocomplete="off"></label>' +
+        '</div>' +
+        '<p class="hint" style="text-align:left;margin:0">' + esc(t('phoneHint')) + '</p>' +
+        (sendState.err ? '<p class="cerr">' + esc(t('invalidContact')) + '</p>' : '') +
+        '<div class="dlg-actions" style="margin-top:0">' +
+          '<button type="button" class="ghost" id="c-done">' + esc(t('doneEdit')) + '</button>' +
+          '<button type="button" class="primary" id="c-add">' + esc(t('addContact')) + '</button>' +
+        '</div>' +
+      '</div></div>';
+  } else {
+    wa += '<div class="send-more"><button type="button" class="link" id="c-edit">' +
+      esc(contacts.length ? t('editContacts') : t('addFirstContact')) + '</button></div>';
+  }
+  wa += '</div>';
+
+  body.innerHTML =
+    '<p style="margin:0 0 12px">' + esc(t('count', n)) + '</p>' + wa +
+    '<div class="send-section"><h4>' + esc(t('otherWays')) + '</h4>' +
+      (svg ? '<div class="qr">' + svg + '</div><p class="hint" style="margin:0">' + esc(t('qrHint')) + '</p>' : '') +
+      '<input class="linkbox" id="linkbox" readonly value="' + esc(url) + '" aria-label="Link">' +
+      '<div class="dlg-actions" style="margin-top:4px">' +
+        (navigator.share ? '<button type="button" class="ghost" id="btn-share">' + esc(t('share')) + '</button>' : '') +
+        '<button type="button" class="ghost" id="btn-copy">' + esc(sendState.copied ? t('copied') : t('copy')) + '</button>' +
+      '</div>' +
+    '</div>';
+  if (sendState.editing) { const f = $('#c-name'); if (f) f.focus(); }
+}
+async function onSendClick(e) {
+  const tgt = e.target;
+  if (tgt.closest('#btn-share')) { navigator.share({ title: t('shareText'), text: t('shareText'), url: sendState.url }).catch(() => {}); return; }
+  if (tgt.closest('#btn-copy')) {
+    try { await navigator.clipboard.writeText(sendState.url); }
+    catch (err) { const lb = $('#linkbox'); lb.select(); try { document.execCommand('copy'); } catch (e2) {} }
+    sendState.copied = true; $('#btn-copy').textContent = t('copied');
+    return;
+  }
+  if (tgt.closest('#c-edit')) { sendState.editing = true; sendState.err = false; renderSend(); return; }
+  if (tgt.closest('#c-done')) { sendState.editing = false; sendState.err = false; renderSend(); return; }
+  if (tgt.closest('#c-add')) { addContact(); return; }
+  const del = tgt.closest('[data-del]');
+  if (del) { contacts.splice(+del.dataset.del, 1); LS.set('einkauf.contacts', contacts); renderSend(); }
+}
+function addContact() {
+  const name = ($('#c-name').value || '').trim(), phone = normalizePhone($('#c-phone').value);
+  if (!name || !phone) { sendState.err = true; renderSend(); return; }
+  contacts.push({ name, phone }); LS.set('einkauf.contacts', contacts);
+  sendState.err = false; renderSend();
+}
+function onSendKey(e) {
+  if (e.key === 'Enter' && (e.target.id === 'c-name' || e.target.id === 'c-phone')) { e.preventDefault(); addContact(); }
 }
 
 /* ---------- Einkaufen ---------- */
@@ -593,6 +726,7 @@ async function init() {
     const b = e.target.closest('[data-lang]'); if (!b) return;
     commitInput(liOf(draft.cur));
     lang = b.dataset.lang; LS.set('einkauf.lang', lang); renderAll();
+    if ($('#dlg-send').open) renderSend();
   });
   document.querySelector('.tabs').addEventListener('click', e => {
     const b = e.target.closest('[data-mode]'); if (!b || b.dataset.mode === mode) return;
@@ -605,6 +739,8 @@ async function init() {
   list.addEventListener('keydown', onEntryKey);
   $('#shop').addEventListener('click', onShopClick);
   $('#btn-send').addEventListener('click', openSend);
+  $('#send-body').addEventListener('click', onSendClick);
+  $('#send-body').addEventListener('keydown', onSendKey);
   $('#btn-close-send').addEventListener('click', () => $('#dlg-send').close());
   $('#btn-extra').addEventListener('click', openExtra);
   $('#btn-extra-end').addEventListener('click', openExtra);
